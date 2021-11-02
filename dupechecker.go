@@ -2,6 +2,7 @@ package dupechecker
 
 import (
 	"math/rand"
+	"sort"
 )
 
 func CreateStrings(n int, sz int) []string {
@@ -53,6 +54,20 @@ func DedupeMapwise(strs []string) []string {
 		if !found {
 			newList = append(newList, s)
 			exists[s] = true
+		}
+	}
+	return newList
+}
+
+func DedupeSorted(strs []string) []string {
+	sortedInput := append([]string{}, strs...)
+	sort.Strings(sortedInput)
+	newList := make([]string, 0, len(strs))
+
+	for _, s := range sortedInput {
+		foundIx := sort.SearchStrings(newList, s)
+		if foundIx == len(newList) || s != newList[foundIx] {
+			newList = append(newList, s)
 		}
 	}
 	return newList
